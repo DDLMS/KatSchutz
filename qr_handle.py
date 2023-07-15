@@ -1,7 +1,8 @@
 import qrcode as qr
 
-def generateInternalIdQRCode(internalId):
-    qrCode = qr.QRCode(box_size=20, border=0)
-    qrCode.add_data(internalId)
-    img = qrCode.make_image(fit=True)
-    img.save('qr_code.png')
+def generateInternalIdQRCode(ids: list):
+    for id in ids:
+        qrCode = qr.QRCode(box_size=2, border=0)
+        qrCode.add_data(id)
+        img = qrCode.make_image(fit=True)
+        img.save('internal_qr_codes/' + id + '.png')
