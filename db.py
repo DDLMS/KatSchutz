@@ -26,3 +26,7 @@ def delete(db, key):
     data = read(db)
     del data[key]
     write(db, data)
+
+def getAll(db):
+    data = read(db)
+    return data

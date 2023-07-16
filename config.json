@@ -1,0 +1,25 @@
+{
+    "entrybox_length": 100,
+    "category": {
+        "Lebensmittel": [
+            "Obst & Gem\u00fcse",
+            "Fleisch & Gefl\u00fcgel",
+            "Fisch & Meeresfr\u00fcchte",
+            "Brot & Backwaren",
+            "Getreide & Nudeln",
+            "Konserven",
+            "Tiefk\u00fchlkost",
+            "S\u00fc\u00dfwaren & Snacks",
+            "Milchprodukte & Eier",
+            "Getr\u00e4nke",
+            "Gew\u00fcrze",
+            "Saucen",
+            "Sonstiges"
+        ],
+        "Non-Food": [
+            "Hygieneartikel",
+            "Reinigungsmittel",
+            "HaushaltswarenSonstiges"
+        ]
+    }
+}
