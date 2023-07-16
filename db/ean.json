@@ -1,0 +1,26 @@
+{
+    "4014400917789": {
+        "ean": "4014400917789",
+        "name": "Nimm2 Soft",
+        "manufacturer": "Storck",
+        "category": "Lebensmittel - S\u00fc\u00dfwaren & Snacks",
+        "amount": "345",
+        "amountUnit": "g"
+    },
+    "4063367386909": {
+        "ean": "4063367386909",
+        "name": "Eistee Pfirsich-Geschmack",
+        "manufacturer": "Kaufland Classic",
+        "category": "Lebensmittel - Getr\u00e4nke",
+        "amount": "1,5",
+        "amountUnit": "l"
+    },
+    "4004980401907": {
+        "ean": "4004980401907",
+        "name": "Erdn\u00fcsse ger\u00f6stet & gesalzen",
+        "manufacturer": "\u00fcltje",
+        "category": "Lebensmittel - S\u00fc\u00dfwaren & Snacks",
+        "amount": "180",
+        "amountUnit": "g"
+    }
+}

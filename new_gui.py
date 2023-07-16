@@ -8,7 +8,7 @@ import data_handle as dh
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("My App")
+        self.title("Donnjer Development Life Management System")
         # self.geometry("600x400")
         self.resizable(0, 0)
 
@@ -19,11 +19,10 @@ class App(tk.Tk):
         self.barcodeEntryFrame = ttk.Frame(self)
         self.barcodeEntryFrame.pack(side=tk.TOP, fill=tk.X, padx=10, pady=10)
 
-        self.barcodeEntryLabel = ttk.Label(
-            self.barcodeEntryFrame, text="Barcode:")
+        # Barcode Eingabe
+        self.barcodeEntryLabel = ttk.Label(self.barcodeEntryFrame, text="Barcode:")
         self.barcodeEntryLabel.grid(row=0, column=0)
-
-        self.barcodeEntry = ttk.Entry(self.barcodeEntryFrame)
+        self.barcodeEntry = ttk.Entry(self.barcodeEntryFrame, width=30)
         self.barcodeEntry.grid(row=0, column=1)
 
         # Enter Taste binden
@@ -36,30 +35,40 @@ class App(tk.Tk):
         self.productInfoFrame = ttk.Frame(self)
         self.productInfoFrame.pack(side=tk.TOP, fill=tk.X, padx=10, pady=10)
 
+        # EAN
         self.productEanLabel = ttk.Label(self.productInfoFrame, text="EAN:")
         self.productEanLabel.grid(row=0, column=0)
-
         self.productEan = ttk.Entry(self.productInfoFrame, width=30)
         self.productEan.grid(row=0, column=1)
-
+        
+        # Produktname
         self.productNameLabel = ttk.Label(self.productInfoFrame, text="Name:")
         self.productNameLabel.grid(row=1, column=0)
-
         self.productName = ttk.Entry(self.productInfoFrame, width=30)
         self.productName.grid(row=1, column=1)
-
-        self.productManufacturerLabel = ttk.Label(
-            self.productInfoFrame, text="Hersteller:")
+        
+        # Hersteller
+        self.productManufacturerLabel = ttk.Label(self.productInfoFrame, text="Hersteller:")
         self.productManufacturerLabel.grid(row=2, column=0)
-
         self.productManufacturer = ttk.Entry(self.productInfoFrame, width=30)
         self.productManufacturer.grid(row=2, column=1)
+        
+        # Menge
+        self.productAmountLabel = ttk.Label(self.productInfoFrame, text="Menge:")
+        self.productAmountLabel.grid(row=4, column=0)
+        self.productAmount = ttk.Entry(self.productInfoFrame, width=30)
+        self.productAmount.grid(row=4, column=1)
+        
+        # Mengeneinheit
+        self.productAmountUnitLabel = ttk.Label(self.productInfoFrame, text="Einheit:")
+        self.productAmountUnitLabel.grid(row=5, column=0)
+        self.productAmountUnit = ttk.Entry(self.productInfoFrame, width=30)
+        self.productAmountUnit.grid(row=5, column=1)
 
-        self.productCategoryLabel = ttk.Label(
-            self.productInfoFrame, text="Kategorie:")
-        self.productCategoryLabel.grid(row=3, column=0)
+        # Kategorie
+        self.productCategoryLabel = ttk.Label(self.productInfoFrame, text="Kategorie:")
+        self.productCategoryLabel.grid(row=6, column=0)
 
-        # Kategoriemenü
         self.productCategory = ""
         categories = dh.config()["category"]
 
@@ -67,12 +76,13 @@ class App(tk.Tk):
         self.productCategoryMenuButtonText.set("Kategorie auswählen")
         self.productCategoryMenuButton = ttk.Menubutton(
             self.productInfoFrame, textvariable=self.productCategoryMenuButtonText)
-        self.productCategoryMenuButton.grid(row=3, column=1)
+        self.productCategoryMenuButton.grid(row=6, column=1)
 
         self.productCategoryMenu = tk.Menu(
             self.productCategoryMenuButton, tearoff=False)
         self.productCategoryMenuButton.config(menu=self.productCategoryMenu)
 
+        # Menüeinträge erstellen
         for category, subcategories in categories.items():
             submenu = tk.Menu(self.productCategoryMenu, tearoff=False)
             self.productCategoryMenu.add_cascade(label=category, menu=submenu)
@@ -85,20 +95,20 @@ class App(tk.Tk):
         self.productName.bind("<Return>", lambda event: self.save_product())
         self.productManufacturer.bind(
             "<Return>", lambda event: self.save_product())
+        self.productAmount.bind("<Return>", lambda event: self.save_product())
+        self.productAmountUnit.bind("<Return>", lambda event: self.save_product())
 
         # Textboxen sperren
-        self.productEan.config(state="readonly")
-        self.productName.config(state="readonly")
-        self.productManufacturer.config(state="readonly")
+        self.lock_product_info()
 
     def product_category_changed(self, category, subcategory):
-        print("Kategorie: " + category + " - " + subcategory)
+        print(f"[GUI] selected category {category} - {subcategory}")
         self.productCategory = category + " - " + subcategory
         self.productCategoryMenuButtonText.set(self.productCategory)
 
     def barcode_entry_scanned(self, event):
         barcode = self.barcodeEntry.get()
-        print("Barcode: " + barcode)
+        print(f"[GUI] barcode scanned: {barcode}")
         self.delete_product_info()
         self.barcodeEntry.delete(0, tk.END)
 
@@ -114,6 +124,8 @@ class App(tk.Tk):
                 self.productEan.insert(0, product["ean"])
                 self.productName.insert(0, product["name"])
                 self.productManufacturer.insert(0, product["manufacturer"])
+                self.productAmount.insert(0, product["amount"])
+                self.productAmountUnit.insert(0, product["amountUnit"])
                 self.productCategory = product["category"]
                 self.productCategoryMenuButtonText.set(self.productCategory)
 
@@ -141,17 +153,29 @@ class App(tk.Tk):
         self.productEan.delete(0, tk.END)
         self.productName.delete(0, tk.END)
         self.productManufacturer.delete(0, tk.END)
+        self.productAmount.delete(0, tk.END)
+        self.productAmountUnit.delete(0, tk.END)
+        self.productCategory = ""
+        self.productCategoryMenuButtonText.set("Kategorie auswählen")
         self.lock_product_info()
 
     def lock_product_info(self):
         self.productEan.config(state="readonly")
         self.productName.config(state="readonly")
         self.productManufacturer.config(state="readonly")
+        self.productAmount.config(state="readonly")
+        self.productAmountUnit.config(state="readonly")
+        
+        self.productCategoryMenuButton.config(state="disabled")
 
     def unlock_product_info(self):
         self.productEan.config(state="normal")
         self.productName.config(state="normal")
         self.productManufacturer.config(state="normal")
+        self.productAmount.config(state="normal")
+        self.productAmountUnit.config(state="normal")
+        
+        self.productCategoryMenuButton.config(state="normal")
 
     def save_product(self):
         if self.productCategory == "":
@@ -163,16 +187,17 @@ class App(tk.Tk):
             "ean": self.productEan.get(),
             "name": self.productName.get(),
             "manufacturer": self.productManufacturer.get(),
-            "category": self.productCategory
+            "category": self.productCategory,
+            "amount": self.productAmount.get(),
+            "amountUnit": self.productAmountUnit.get(),
         }
 
         dh.save_product(product)
         messagebox.showinfo("Produkt gespeichert",
                             "Das Produkt wurde erfolgreich gespeichert")
         self.delete_product_info()
-        self.productCategory = ""
-        self.productCategoryMenuButtonText.set("Kategorie auswählen")
         self.barcodeEntry.focus()
+
 
 
 if __name__ == "__main__":
