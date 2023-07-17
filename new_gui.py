@@ -3,55 +3,69 @@ from tkinter import ttk
 
 from tkinter import messagebox
 import data_handle as dh
-
+import barcode_handle as bh
 
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Donnjer Development Life Management System")
         # self.geometry("600x400")
-        self.resizable(0, 0)
+        self.resizable(False, False)
 
+        self.create_mainframe()
         self.create_barcode_entry_frame()
         self.create_product_info_frame()
+        self.create_management_window()
+        self.prepare_scan_process()
+
+    def create_mainframe(self):
+        self.mainframe = ttk.Frame(self)
+        self.mainframe.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+        self.productFrame = ttk.Frame(self.mainframe)
+        self.productFrame.grid(row=0, column=0, sticky="nsew")
+        
+        self.itemFrame = ttk.Frame(self.mainframe)
+        self.itemFrame.grid(row=0, column=1, sticky="nsew")
 
     def create_barcode_entry_frame(self):
-        self.barcodeEntryFrame = ttk.Frame(self)
+        self.barcodeEntryFrame = ttk.Frame(self.productFrame)
         self.barcodeEntryFrame.pack(side=tk.TOP, fill=tk.X, padx=10, pady=10)
 
-        # Barcode Eingabe
-        self.barcodeEntryLabel = ttk.Label(self.barcodeEntryFrame, text="Barcode:")
-        self.barcodeEntryLabel.grid(row=0, column=0)
-        self.barcodeEntry = ttk.Entry(self.barcodeEntryFrame, width=30)
-        self.barcodeEntry.grid(row=0, column=1)
-
-        # Enter Taste binden
-        self.barcodeEntry.bind("<Return>", self.barcode_entry_scanned)
-
-        # Fokus auf Eingabefeld setzen
-        self.barcodeEntry.focus()
+        # Auswahl der Barcode Eingabe
+        self.scanProductButton = ttk.Button(self.barcodeEntryFrame, text="Produkt scannen", command=lambda: self.create_scanner_window("scan_product"))
+        self.scanProductButton.grid(row=0, column=0, padx=5, pady=5)
+        
+        self.scanAddItemButton = ttk.Button(self.barcodeEntryFrame, text="Item hizufügen", command=lambda: self.create_scanner_window("add_item"))
+        self.scanAddItemButton.grid(row=0, column=1, padx=5, pady=5)
+        
+        self.scanRemoveItemButton = ttk.Button(self.barcodeEntryFrame, text="Item entfernen", command=lambda: self.create_scanner_window("remove_item"))
+        self.scanRemoveItemButton.grid(row=0, column=2, padx=5, pady=5)
 
     def create_product_info_frame(self):
-        self.productInfoFrame = ttk.Frame(self)
+        self.productInfoFrame = ttk.Frame(self.productFrame)
         self.productInfoFrame.pack(side=tk.TOP, fill=tk.X, padx=10, pady=10)
+
+        self.productInfoLabel = ttk.Label(self.productInfoFrame, text="Produktinformationen")
+        self.productInfoLabel.grid(row=0, column=0, columnspan=2, pady=5)
 
         # EAN
         self.productEanLabel = ttk.Label(self.productInfoFrame, text="EAN:")
-        self.productEanLabel.grid(row=0, column=0)
+        self.productEanLabel.grid(row=1, column=0)
         self.productEan = ttk.Entry(self.productInfoFrame, width=30)
-        self.productEan.grid(row=0, column=1)
+        self.productEan.grid(row=1, column=1)
         
         # Produktname
         self.productNameLabel = ttk.Label(self.productInfoFrame, text="Name:")
-        self.productNameLabel.grid(row=1, column=0)
+        self.productNameLabel.grid(row=2, column=0)
         self.productName = ttk.Entry(self.productInfoFrame, width=30)
-        self.productName.grid(row=1, column=1)
+        self.productName.grid(row=2, column=1)
         
         # Hersteller
         self.productManufacturerLabel = ttk.Label(self.productInfoFrame, text="Hersteller:")
-        self.productManufacturerLabel.grid(row=2, column=0)
+        self.productManufacturerLabel.grid(row=3, column=0)
         self.productManufacturer = ttk.Entry(self.productInfoFrame, width=30)
-        self.productManufacturer.grid(row=2, column=1)
+        self.productManufacturer.grid(row=3, column=1)
         
         # Menge
         self.productAmountLabel = ttk.Label(self.productInfoFrame, text="Menge:")
@@ -106,47 +120,23 @@ class App(tk.Tk):
         self.productCategory = category + " - " + subcategory
         self.productCategoryMenuButtonText.set(self.productCategory)
 
-    def barcode_entry_scanned(self, event):
-        barcode = self.barcodeEntry.get()
-        print(f"[GUI] barcode scanned: {barcode}")
-        self.delete_product_info()
-        self.barcodeEntry.delete(0, tk.END)
-
-        product = None
-        product = dh.get_product_info(barcode)
-
-        # Wenn Barcode ein EAN-13 Code ist
-        if len(barcode) == 13:
-            # Wenn Produkt bereits in der Datenbank vorhanden ist
-            if product is not None:
-                self.unlock_product_info()
-
-                self.productEan.insert(0, product["ean"])
-                self.productName.insert(0, product["name"])
-                self.productManufacturer.insert(0, product["manufacturer"])
-                self.productAmount.insert(0, product["amount"])
-                self.productAmountUnit.insert(0, product["amountUnit"])
-                self.productCategory = product["category"]
-                self.productCategoryMenuButtonText.set(self.productCategory)
-
-            # Wenn Produkt nicht in der Datenbank vorhanden ist
-            else:
-                self.unlock_product_info()
-                self.productEan.insert(0, barcode)
-                self.productCategoryMenuButtonText.set("Kategorie auswählen")
-                self.productCategory = ""
-
-                messagebox.showinfo(
-                    "Produkt nicht gefunden", "Produkt nicht gefunden. Informationen können jetzt eingetragen werden.")
-
-                self.productName.focus()
-
-            # EAN-13 Code sperren, da er nicht mehr geändert werden darf
-            self.productEan.config(state="readonly")
-
-        # Wenn Barcode kein EAN-13 Code ist
+    def populate_product_info(self, product):
+        if type(product) is dict:
+            self.productEan.insert(0, product["ean"])
+            self.productName.insert(0, product["name"])
+            self.productManufacturer.insert(0, product["manufacturer"])
+            self.productAmount.insert(0, product["amount"])
+            self.productAmountUnit.insert(0, product["amountUnit"])
+            self.productCategory = product["category"]
+            self.productCategoryMenuButtonText.set(self.productCategory)
+        
+        # Wenn das Produkt nicht im Speicher wurde, kann es manuell angelegt werden
         else:
-            messagebox.showerror("Fehler", "Der Barcode ist kein EAN-13 Code!")
+            self.productEan.insert(0, product)
+            messagebox.showinfo("Produkt nicht gefunden", "Das Produkt wurde nicht gefunden. Die Produktinformationen können jetzt manuell ausgefüllt werden.")
+
+            # EAN-Textbox sperren, da sie nicht mehr geändert werden darf
+            self.productEan.config(state="readonly")
 
     def delete_product_info(self) -> None:
         self.unlock_product_info()
@@ -195,11 +185,75 @@ class App(tk.Tk):
         dh.save_product(product)
         messagebox.showinfo("Produkt gespeichert",
                             "Das Produkt wurde erfolgreich gespeichert")
+        self.prepare_scan_process()
+
+
+##################################################################
+
+# Verwaltugsfenster
+
+    def create_management_window(self):
+        self.itemManagementFrame = ttk.Frame(self.itemFrame)
+        self.itemManagementFrame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        
+        self.itemManagementLabel = ttk.Label(self.itemManagementFrame, text="Item Verwaltung")
+        self.itemManagementLabel.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        
+       
+    def unlock_item_info(self):
+        pass
+    
+    def lock_item_info(self):
+        pass
+    
+    def delete_item_info(self):
+        pass
+     
+##################################################################
+
+# Scanner
+
+    def create_scanner_window(self, reason: str):
+        self.scannerWindow = tk.Toplevel(self)
+        self.scannerWindow.title("Scanner")
+        
+        self.prepare_scan_process()
+        
+        self.scannerBox = ttk.Entry(self.scannerWindow, width=30)
+        self.scannerBox.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        
+        self.scannerBox.focus()
+        self.scannerBox.bind("<Return>", lambda event: self.barcode_scanned(reason))
+        
+    def barcode_scanned(self, reason: str):
+        barcode = self.scannerBox.get()
+        self.scannerWindow.destroy()
+        type = bh.is_official(barcode)
+        
+        self.unlock_product_info()
+        product = dh.get_product_info(barcode)
+        if product is not None:
+            self.populate_product_info(product)
+        else:
+            self.populate_product_info(barcode)
+        
+        
+        if reason == "scan_product":
+            pass
+        
+        elif reason == "add_item":
+            self.lock_product_info()
+            self.unlock_item_info()
+            
+    def prepare_scan_process(self):
+        self.unlock_product_info()
+        self.unlock_item_info()
+        self.delete_item_info()
         self.delete_product_info()
-        self.barcodeEntry.focus()
-
-
+        self.lock_item_info()
+        self.lock_product_info()
 
 if __name__ == "__main__":
     app = App()
     app.mainloop()
+    

@@ -22,5 +22,21 @@
         "category": "Lebensmittel - S\u00fc\u00dfwaren & Snacks",
         "amount": "180",
         "amountUnit": "g"
+    },
+    "4104450004086": {
+        "ean": "4104450004086",
+        "name": "Nat\u00fcrliches Mineralwasser Medium",
+        "manufacturer": "Vilsa",
+        "category": "Lebensmittel - Getr\u00e4nke",
+        "amount": "1",
+        "amountUnit": "l"
+    },
+    "4001518103487": {
+        "ean": "4001518103487",
+        "name": "soft cake Orange Vollmilch",
+        "manufacturer": "Griesson",
+        "category": "Lebensmittel - S\u00fc\u00dfwaren & Snacks",
+        "amount": "300",
+        "amountUnit": "g"
     }
 }

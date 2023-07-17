@@ -2,24 +2,43 @@
     "entrybox_length": 100,
     "category": {
         "Lebensmittel": [
-            "Obst & Gem\u00fcse",
-            "Fleisch & Gefl\u00fcgel",
-            "Fisch & Meeresfr\u00fcchte",
             "Brot & Backwaren",
-            "Getreide & Nudeln",
-            "Konserven",
-            "Tiefk\u00fchlkost",
-            "S\u00fc\u00dfwaren & Snacks",
-            "Milchprodukte & Eier",
+            "Fisch & Meeresfr\u00fcchte",
+            "Fleisch & Gefl\u00fcgel",
             "Getr\u00e4nke",
+            "Getreide & Nudeln",
             "Gew\u00fcrze",
+            "Konserven",
+            "Milchprodukte & Eier",
+            "Obst & Gem\u00fcse",
             "Saucen",
+            "S\u00fc\u00dfwaren & Snacks",
+            "Tiefk\u00fchlkost",
             "Sonstiges"
         ],
         "Non-Food": [
+            "B\u00fcrobedarf",
+            "Haushaltswaren",
             "Hygieneartikel",
             "Reinigungsmittel",
-            "HaushaltswarenSonstiges"
+            "Sonstiges"
+        ],
+        "Krisenvorsorge": [
+            "Feuer & nichtelektrische Lichtquellen",
+            "Kochen & W\u00e4rme",
+            "Kleidung",
+            "Medizinprodukte",
+            "Moral",
+            "Navigation, Kommunikation & Dokumente",
+            "Nahrungsmittel",
+            "Pers\u00f6nliche Schutzausr\u00fcstung",
+            "Reparaturmaterial & Werkzeuge",
+            "Strom, Energie & Beleuchtung",
+            "Unterschlupf",
+            "Verteidigung",
+            "Wasser & Wasseraufbereitung",
+            "Hygiene",
+            "Sonstiges"
         ]
     }
 }
