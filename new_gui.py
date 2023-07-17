@@ -23,14 +23,14 @@ class App(tk.Tk):
         self.mainframe.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
         self.productFrame = ttk.Frame(self.mainframe)
-        self.productFrame.grid(row=0, column=0, sticky="nsew")
+        self.productFrame.grid(row=1, column=0, sticky="nsew")
         
         self.itemFrame = ttk.Frame(self.mainframe)
-        self.itemFrame.grid(row=0, column=1, sticky="nsew")
+        self.itemFrame.grid(row=1, column=1, sticky="nsew")
 
     def create_barcode_entry_frame(self):
-        self.barcodeEntryFrame = ttk.Frame(self.productFrame)
-        self.barcodeEntryFrame.pack(side=tk.TOP, fill=tk.X, padx=10, pady=10)
+        self.barcodeEntryFrame = ttk.Frame(self.mainframe)
+        self.barcodeEntryFrame.grid(row=0, column=0, columnspan=2, sticky="nsew", padx=10, pady=10)
 
         # Auswahl der Barcode Eingabe
         self.scanProductButton = ttk.Button(self.barcodeEntryFrame, text="Produkt scannen", command=lambda: self.create_scanner_window("scan_product"))
@@ -197,9 +197,12 @@ class App(tk.Tk):
         self.itemManagementFrame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
         self.itemManagementLabel = ttk.Label(self.itemManagementFrame, text="Item Verwaltung")
-        self.itemManagementLabel.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        self.itemManagementLabel.grid(row=0, column=0, columnspan=2)
         
-       
+        self.itemMhdLabel = ttk.Label(self.itemManagementFrame, text="MHD:")
+        self.itemMhdLabel.grid(row=1, column=0)
+        
+        
     def unlock_item_info(self):
         pass
     
