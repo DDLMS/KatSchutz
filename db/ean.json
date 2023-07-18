@@ -38,5 +38,13 @@
         "category": "Lebensmittel - S\u00fc\u00dfwaren & Snacks",
         "amount": "300",
         "amountUnit": "g"
+    },
+    "1": {
+        "ean": "1",
+        "name": "Test",
+        "manufacturer": "",
+        "category": "Non-Food - B\u00fcrobedarf",
+        "amount": "",
+        "amountUnit": ""
     }
 }

@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
-
 from tkinter import messagebox
+
+import tkcalendar as tkc
+
 import data_handle as dh
 import barcode_handle as bh
 
@@ -130,7 +132,7 @@ class App(tk.Tk):
             self.productCategory = product["category"]
             self.productCategoryMenuButtonText.set(self.productCategory)
         
-        # Wenn das Produkt nicht im Speicher wurde, kann es manuell angelegt werden
+        # Wenn das Produkt nicht im Speicher ist, kann es manuell angelegt werden
         else:
             self.productEan.insert(0, product)
             messagebox.showinfo("Produkt nicht gefunden", "Das Produkt wurde nicht gefunden. Die Produktinformationen können jetzt manuell ausgefüllt werden.")
@@ -202,15 +204,64 @@ class App(tk.Tk):
         self.itemMhdLabel = ttk.Label(self.itemManagementFrame, text="MHD:")
         self.itemMhdLabel.grid(row=1, column=0)
         
+        self.itemMhd = tkc.DateEntry(self.itemManagementFrame, width=30)
+        self.itemMhd.grid(row=1, column=1)
+        
+        self.itemAmountLabel = ttk.Label(self.itemManagementFrame, text="Menge:")
+        self.itemAmountLabel.grid(row=2, column=0)
+        
+        self.itemAmount = ttk.Entry(self.itemManagementFrame, width=30)
+        self.itemAmount.grid(row=2, column=1)
+        
+        self.itemPriceLabel = ttk.Label(self.itemManagementFrame, text="Preis:")
+        self.itemPriceLabel.grid(row=3, column=0)
+        
+        self.itemPrice = ttk.Entry(self.itemManagementFrame, width=30)
+        self.itemPrice.grid(row=3, column=1)
+        
+        self.itemBuyDateLabel = ttk.Label(self.itemManagementFrame, text="Einkaufsdatum:")
+        self.itemBuyDateLabel.grid(row=4, column=0)
+        
+        self.itemBuyDate = tkc.DateEntry(self.itemManagementFrame, width=30)
+        self.itemBuyDate.grid(row=4, column=1)    
+        
+        self.itemBuyPlaceLabel = ttk.Label(self.itemManagementFrame, text="Einkaufsort:")
+        self.itemBuyPlaceLabel.grid(row=5, column=0)
+        
+        self.itemBuyPlace = ttk.Entry(self.itemManagementFrame, width=30)
+        self.itemBuyPlace.grid(row=5, column=1)
+        
+        self.itemCommentLabel = ttk.Label(self.itemManagementFrame, text="Kommentar:")
+        self.itemCommentLabel.grid(row=6, column=0)
+        
+        self.itemComment = ttk.Entry(self.itemManagementFrame, width=30)
+        self.itemComment.grid(row=6, column=1)  
         
     def unlock_item_info(self):
-        pass
+        self.itemMhd.config(state="normal")
+        self.itemAmount.config(state="normal")
+        self.itemPrice.config(state="normal")
+        self.itemBuyDate.config(state="normal")
+        self.itemBuyPlace.config(state="normal")
+        self.itemComment.config(state="normal")
     
     def lock_item_info(self):
-        pass
+        self.itemMhd.config(state="disabled")
+        self.itemAmount.config(state="readonly")
+        self.itemPrice.config(state="readonly")
+        self.itemBuyDate.config(state="disabled")
+        self.itemBuyPlace.config(state="readonly")
+        self.itemComment.config(state="readonly")
     
     def delete_item_info(self):
-        pass
+        self.unlock_item_info()
+        self.itemMhd.delete(0, tk.END)
+        self.itemAmount.delete(0, tk.END)
+        self.itemPrice.delete(0, tk.END)
+        self.itemBuyDate.delete(0, tk.END)
+        self.itemBuyPlace.delete(0, tk.END)
+        self.itemComment.delete(0, tk.END)
+        self.lock_item_info()
      
 ##################################################################
 
