@@ -124,5 +124,47 @@
         "mhd": "17.09.2023",
         "price": 0.99,
         "comment": "Testkommentar der wirklich sehr lang ist oder so "
+    },
+    "DD000000000028": {
+        "barcode": "4018077692536",
+        "mhd": "2023-07-20",
+        "price": 2.0,
+        "comment": "Testkomm"
+    },
+    "DD000000000029": {
+        "barcode": "4018077692536",
+        "mhd": "2023-07-20",
+        "price": 2.0,
+        "comment": "Testkomm"
+    },
+    "DD000000000030": {
+        "barcode": "4004980401907",
+        "mhd": "17.09.2023",
+        "price": 0.99,
+        "comment": "Testkommentar der wirklich sehr lang ist oder so "
+    },
+    "DD000000000031": {
+        "barcode": "4004980401907",
+        "mhd": "17.09.2023",
+        "price": 0.99,
+        "comment": "Testkommentar der wirklich sehr lang ist oder so "
+    },
+    "DD000000000032": {
+        "barcode": "4004980401907",
+        "mhd": "17.09.2023",
+        "price": 0.99,
+        "comment": "Testkommentar der wirklich sehr lang ist oder so "
+    },
+    "DD000000000033": {
+        "barcode": "4004980401907",
+        "mhd": "17.09.2023",
+        "price": 0.99,
+        "comment": "Testkommentar der wirklich sehr lang ist oder so "
+    },
+    "DD000000000034": {
+        "barcode": "4004980401907",
+        "mhd": "17.09.2023",
+        "price": 0.99,
+        "comment": "Testkommentar der wirklich sehr lang ist oder so "
     }
 }

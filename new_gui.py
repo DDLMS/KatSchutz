@@ -29,6 +29,10 @@ class App(tk.Tk):
         
         self.itemFrame = ttk.Frame(self.mainframe)
         self.itemFrame.grid(row=1, column=1, sticky="nsew")
+        
+        # Beide Spalten gleichmäßig aufteilen
+        self.mainframe.columnconfigure(0, weight=1)
+        self.mainframe.columnconfigure(1, weight=1)
 
     def create_barcode_entry_frame(self):
         self.barcodeEntryFrame = ttk.Frame(self.mainframe)
@@ -54,31 +58,31 @@ class App(tk.Tk):
         # EAN
         self.productEanLabel = ttk.Label(self.productInfoFrame, text="EAN:")
         self.productEanLabel.grid(row=1, column=0)
-        self.productEan = ttk.Entry(self.productInfoFrame, width=30)
+        self.productEan = ttk.Entry(self.productInfoFrame)
         self.productEan.grid(row=1, column=1)
         
         # Produktname
         self.productNameLabel = ttk.Label(self.productInfoFrame, text="Name:")
         self.productNameLabel.grid(row=2, column=0)
-        self.productName = ttk.Entry(self.productInfoFrame, width=30)
+        self.productName = ttk.Entry(self.productInfoFrame)
         self.productName.grid(row=2, column=1)
         
         # Hersteller
         self.productManufacturerLabel = ttk.Label(self.productInfoFrame, text="Hersteller:")
         self.productManufacturerLabel.grid(row=3, column=0)
-        self.productManufacturer = ttk.Entry(self.productInfoFrame, width=30)
+        self.productManufacturer = ttk.Entry(self.productInfoFrame)
         self.productManufacturer.grid(row=3, column=1)
         
         # Menge
         self.productAmountLabel = ttk.Label(self.productInfoFrame, text="Menge:")
         self.productAmountLabel.grid(row=4, column=0)
-        self.productAmount = ttk.Entry(self.productInfoFrame, width=30)
+        self.productAmount = ttk.Entry(self.productInfoFrame)
         self.productAmount.grid(row=4, column=1)
         
         # Mengeneinheit
         self.productAmountUnitLabel = ttk.Label(self.productInfoFrame, text="Einheit:")
         self.productAmountUnitLabel.grid(row=5, column=0)
-        self.productAmountUnit = ttk.Entry(self.productInfoFrame, width=30)
+        self.productAmountUnit = ttk.Entry(self.productInfoFrame)
         self.productAmountUnit.grid(row=5, column=1)
 
         # Kategorie
@@ -105,14 +109,9 @@ class App(tk.Tk):
             for subcategory in subcategories:
                 submenu.add_command(label=subcategory, command=lambda cat=category,
                                     sub=subcategory: self.product_category_changed(cat, sub))
-
-        # Textboxen wie den Save-Button binden
-        self.productEan.bind("<Return>", lambda event: self.save_product())
-        self.productName.bind("<Return>", lambda event: self.save_product())
-        self.productManufacturer.bind(
-            "<Return>", lambda event: self.save_product())
-        self.productAmount.bind("<Return>", lambda event: self.save_product())
-        self.productAmountUnit.bind("<Return>", lambda event: self.save_product())
+                
+        self.productConfirmButton = ttk.Button(self.productInfoFrame, text="Bestätigen", command=self.confirm_product)
+        self.productConfirmButton.grid(row=7, column=0, columnspan=2, pady=5, sticky="ew")
 
         # Textboxen sperren
         self.lock_product_info()
@@ -169,7 +168,7 @@ class App(tk.Tk):
         
         self.productCategoryMenuButton.config(state="normal")
 
-    def save_product(self):
+    def confirm_product(self):
         if self.productCategory == "":
             messagebox.showerror(
                 "Fehler", "Es muss eine Kategorie ausgewählt werden!")
@@ -204,38 +203,41 @@ class App(tk.Tk):
         self.itemMhdLabel = ttk.Label(self.itemManagementFrame, text="MHD:")
         self.itemMhdLabel.grid(row=1, column=0)
         
-        self.itemMhd = tkc.DateEntry(self.itemManagementFrame, width=30)
+        self.itemMhd = tkc.DateEntry(self.itemManagementFrame)
         self.itemMhd.grid(row=1, column=1)
         
         self.itemAmountLabel = ttk.Label(self.itemManagementFrame, text="Menge:")
         self.itemAmountLabel.grid(row=2, column=0)
         
-        self.itemAmount = ttk.Entry(self.itemManagementFrame, width=30)
+        self.itemAmount = ttk.Entry(self.itemManagementFrame)
         self.itemAmount.grid(row=2, column=1)
         
         self.itemPriceLabel = ttk.Label(self.itemManagementFrame, text="Preis:")
         self.itemPriceLabel.grid(row=3, column=0)
         
-        self.itemPrice = ttk.Entry(self.itemManagementFrame, width=30)
+        self.itemPrice = ttk.Entry(self.itemManagementFrame)
         self.itemPrice.grid(row=3, column=1)
         
         self.itemBuyDateLabel = ttk.Label(self.itemManagementFrame, text="Einkaufsdatum:")
         self.itemBuyDateLabel.grid(row=4, column=0)
         
-        self.itemBuyDate = tkc.DateEntry(self.itemManagementFrame, width=30)
+        self.itemBuyDate = tkc.DateEntry(self.itemManagementFrame)
         self.itemBuyDate.grid(row=4, column=1)    
         
         self.itemBuyPlaceLabel = ttk.Label(self.itemManagementFrame, text="Einkaufsort:")
         self.itemBuyPlaceLabel.grid(row=5, column=0)
         
-        self.itemBuyPlace = ttk.Entry(self.itemManagementFrame, width=30)
+        self.itemBuyPlace = ttk.Entry(self.itemManagementFrame)
         self.itemBuyPlace.grid(row=5, column=1)
         
         self.itemCommentLabel = ttk.Label(self.itemManagementFrame, text="Kommentar:")
         self.itemCommentLabel.grid(row=6, column=0)
         
-        self.itemComment = ttk.Entry(self.itemManagementFrame, width=30)
+        self.itemComment = ttk.Entry(self.itemManagementFrame)
         self.itemComment.grid(row=6, column=1)  
+        
+        self.itemConfirmButton = ttk.Button(self.itemManagementFrame, text="Bestätigen", command=self.confirm_item)
+        self.itemConfirmButton.grid(row=7, column=0, columnspan=2, pady=10, sticky="we")
         
     def unlock_item_info(self):
         self.itemMhd.config(state="normal")
@@ -263,6 +265,18 @@ class App(tk.Tk):
         self.itemComment.delete(0, tk.END)
         self.lock_item_info()
      
+    def confirm_item(self):
+        dh.save_item(
+            self.productEan.get(), 
+            int(self.itemAmount.get()), 
+            str(self.itemMhd.get_date()), 
+            float(self.itemPrice.get()), 
+            str(self.itemBuyDate.get_date()), 
+            self.itemBuyPlace.get(), 
+            self.itemComment.get()
+            )
+        
+        
 ##################################################################
 
 # Scanner
@@ -273,7 +287,7 @@ class App(tk.Tk):
         
         self.prepare_scan_process()
         
-        self.scannerBox = ttk.Entry(self.scannerWindow, width=30)
+        self.scannerBox = ttk.Entry(self.scannerWindow)
         self.scannerBox.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
         self.scannerBox.focus()
