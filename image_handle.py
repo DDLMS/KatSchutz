@@ -25,3 +25,11 @@ def build_label(qr_code_file, item_ean: str, item_mhd: str, item_price: str, ite
     master_image.save(f"labels/{qr_code_file}.png")
     
 build_label("DD999999999932", "Testprodukt", "2021-12-31", "0,99€", "2021-12-31", "Testort")
+
+def build_shopping_list(shopping_list: dict):
+    
+    for category in shopping_list.keys():
+        print(category)
+        for product in shopping_list[category]:
+            print(product)
+            

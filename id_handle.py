@@ -1,6 +1,6 @@
 import db
 
-def getNext() -> str:
+def getNextProductId() -> str:
     """Gibt die nächste freie ID zurück"""
     #Daten aus Zentralspeicher lesen
     data = db.read("zentralspeicher")
@@ -24,3 +24,26 @@ def getNext() -> str:
     
     #ID zurückgeben
     return id
+
+def getNextShoppingListId() -> str:
+    """Gibt die nächste freie ID für die Einkaufsliste zurück"""
+    
+    try:
+        uid = int(db.get("zentralspeicher", "shopping_list_id"))
+        uid = uid+1
+    except KeyError:
+        uid = 0
+    db.set("zentralspeicher", "shopping_list_id", uid)
+    return str(uid)
+
+def getCurrentShoppingListId() -> str:
+    """Gibt die aktuelle ID für die Einkaufsliste zurück"""
+    
+    try:
+        uid = int(db.get("zentralspeicher", "shopping_list_id"))
+    except KeyError:
+        uid = 0
+    return str(uid)
+    
+    
+print(getNextShoppingListId())
