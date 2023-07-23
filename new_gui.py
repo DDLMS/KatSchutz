@@ -4,8 +4,8 @@ from tkinter import messagebox
 
 import tkcalendar as tkc
 
-import data_handle as dh
-import barcode_handle as bh
+import backend.handle.data_handle as dh
+import backend.barcode_handle as bh
 
 class App(tk.Tk):
     def __init__(self):

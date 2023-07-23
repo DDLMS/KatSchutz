@@ -1,5 +1,5 @@
 """Das data_handle Modul interargiert mit der Datenbank und anderen Modulen und macht diese über vereinfachte Befehle für andere Module zugänglich"""
-import db
+import backend.db as db
 import id_handle as idh
 import qr_handle as qrh
 import printer_handle as ph

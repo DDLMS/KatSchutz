@@ -1,4 +1,4 @@
-import db
+import backend.db as db
 
 cat = {
     "Lebensmittel": [
