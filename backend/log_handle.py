@@ -11,7 +11,15 @@ class Logger:
         self.module = module_name
         
     def log(self, message: str, level: int = 4) -> None:
-        """Gibt eine Log-Nachricht aus und speichert sie in der Log-Datei"""
+        """Gibt eine Log-Nachricht aus und speichert sie in der Log-Datei
+        
+        Log-Level:
+        1. Fehler: Rot
+        2. Warnung: Gelb
+        3. Info: Lila
+        4. Debug: Grau
+        
+        """
         
         print_log, save_log  = self.generate_log(message, level)
         print(print_log)
@@ -23,11 +31,7 @@ class Logger:
         """
         Erzeugt einen Log-Eintrag
         
-        Log-Level:
-        1. Fehler: Rot
-        2. Warnung: Gelb
-        3. Info: Lila
-        4. Debug: Grau
+        
         """
         
         

@@ -50,3 +50,14 @@ def getAll(db: str) -> dict[str, typing.Any]:
     data = read(db)
     Log.log(f"got all keys from database '{db}'")
     return data
+
+if __name__ == "__main__":
+    try:
+        set("test_db", "test_key", "test_value")
+        get("test_db", "test_key")
+        set("test_db", "test_key", "test_value2")
+        get("test_db", "test_key")
+        getAll("test_db")
+        delete("test_db", "test_key")
+    except Exception as e:
+        Log.log(f"Error: {e}", 1)

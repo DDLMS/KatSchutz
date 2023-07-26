@@ -1,4 +1,4 @@
-import backend.db as db
+import db
 
 def getNextProductId() -> str:
     """Gibt die nächste freie ID zurück"""

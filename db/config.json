@@ -40,5 +40,9 @@
             "Hygiene",
             "Sonstiges"
         ]
-    }
+    },
+    "label_image_path": "img/labels/",
+    "qr_image_path": "img/qr/"
+
+
 }

@@ -1,5 +1,6 @@
 """Das data_handle Modul interargiert mit der Datenbank und anderen Modulen und macht diese über vereinfachte Befehle für andere Module zugänglich"""
-import backend.db as db
+import db
+
 import id_handle as idh
 import qr_handle as qrh
 import printer_handle as ph
@@ -64,14 +65,14 @@ def save_item(
         db.set("item", uid, item)
 
         # QR-Code für das Lager erstellen
-        qrh.generateInternalIdQRCode(uid)
+        qrh.generate_internal_id_qrcode(uid)
 
         price_label = f"{item['price']}€"
 
         ih.build_label(uid, item["barcode"], item["mhd"],
                        price_label, buy_date, buy_place, item["comment"])
 
-        ph.print_qr(uid)
+        ph.print_label(uid)
 
 
 def add_shopping_list_item_barcode(barcode: str, amount: int) -> None:
@@ -99,3 +100,15 @@ def add_shopping_list_item_barcode(barcode: str, amount: int) -> None:
 
         # Einkaufsliste in Datenbank speichern
         db.set("shopping_list", shopping_list_uid, shopping_list)
+
+
+def test_qr_printer():
+    qrh.generate_internal_id_qrcode("4004980401907")
+
+    ih.build_label("4004980401907", "4004980401907", "17.09.2023",
+                   "420.69€", "17.07.2023", "Testort", "Testkommentar")
+    ph.print_label("4004980401907")
+
+
+if __name__ == "__main__":
+    test_qr_printer()
